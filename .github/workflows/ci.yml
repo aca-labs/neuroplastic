@@ -47,6 +47,8 @@ jobs:
       - uses: actions/checkout@v2
       - run: shards install --ignore-crystal-version
         if: steps.cache.outputs.cache-hit != 'true'
+      - name: Wait for the behemoth... elasticsearch
+        run: sleep 5
       - name: Tests
         run: crystal spec --error-trace -v --order=random --no-color
       - name: Tests Multithreaded
