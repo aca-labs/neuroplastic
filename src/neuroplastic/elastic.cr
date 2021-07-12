@@ -94,7 +94,7 @@ class Neuroplastic::Elastic(T)
   # Filters off results that do not match the document type.
   # Returns a collection of records pulled in from the db.
   private def get_records(result)
-    ids = result.dig?(HITS, HITS).try(&.as_a.compact_map { |hit| hit[ID].as_s })
+    ids = result.dig?(HITS, HITS).try(&.as_a.compact_map(&.[ID].as_s?))
 
     ids ? T.find_all(ids) : [] of T
   end

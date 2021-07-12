@@ -1,0 +1,53 @@
+name: CI
+on:
+  push:
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at midnight
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    container: crystallang/crystal
+    steps:
+      - uses: actions/checkout@v2
+      - name: Format
+        run: crystal tool format --check
+      - name: Lint
+        uses: crystal-ameba/github-action@v0.2.12
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        crystal:
+          - nightly
+          - 1.0.0
+    services:
+      rethink:
+        image: rethinkdb:2.4
+        ports:
+        - 29015:29015
+        - 28015:28015
+      elastic:
+        image: blacktop/elasticsearch:7.6
+        env:
+          discovery.type: "single-node -d"
+        ports:
+        - 9300:9300
+        - 9200:9200
+    steps:
+      - uses: oprypin/install-crystal@v1
+        with:
+          crystal: ${{ matrix.crystal }}
+      - uses: actions/checkout@v2
+      - run: shards install --ignore-crystal-version
+        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Wait for the behemoth... elasticsearch
+        run: sleep 5
+      - name: Tests
+        run: crystal spec --error-trace -v --order=random --no-color
+      - name: Tests Multithreaded
+        run: crystal spec --error-trace -v --order=random --no-color -Dpreview_mt
