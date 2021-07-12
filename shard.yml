@@ -1,6 +1,6 @@
 name: neuroplastic
 version: 1.7.1
-crystal: 0.35.1
+crystal: ">= 0.35.1"
 license: MIT
 
 authors:
