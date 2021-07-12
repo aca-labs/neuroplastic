@@ -1,6 +1,6 @@
 # neuroplastic
 
-[![Build Status](https://travis-ci.com/place-labs/neuroplastic.svg?branch=master)](https://travis-ci.com/place-labs/neuroplastic)
+[![CI](https://github.com/place-labs/neuroplastic/actions/workflows/ci.yml/badge.svg)](https://github.com/place-labs/neuroplastic/actions/workflows/ci.yml)
 
 A module for [rethinkdb-orm](https://github.com/spider-gazelle/rethinkdb-orm).<br>
 Exposes an elasticsearch query DSL that automagically resolves relations between the models.
@@ -9,11 +9,11 @@ Exposes an elasticsearch query DSL that automagically resolves relations between
 
 1. Add the dependency to your `shard.yml`:
 
-   ```yaml
-   dependencies:
-     neuroplastic:
-       github: place-labs/neuroplastic
-   ```
+```yaml
+dependencies:
+    neuroplastic:
+    github: place-labs/neuroplastic
+```
 
 2. Run `shards install`
 
