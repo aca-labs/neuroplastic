@@ -35,11 +35,11 @@ jobs:
         - 28015:28015
       elastic:
         image: blacktop/elasticsearch:7.6
-        ports:
-          - 9300:9300
-          - 9200:9200
         env:
           discovery.type: "single-node -d"
+        ports:
+        - 9300:9300
+        - 9200:9200
     steps:
       - uses: oprypin/install-crystal@v1
         with:
